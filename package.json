@@ -1,0 +1,11 @@
+{
+  "name": "PaperAirplanes",
+  "version" : "0.1",
+  "description": "Paper Airplanes game in JS",
+  "author": "Raul Rene Lepsa <raul.lepsa@gmail.com>",
+  "dependencies": {
+    "grunt-contrib-less" : ">0.2",
+    "grunt" : "0.4",
+    "express": "3.x"
+  }
+}
