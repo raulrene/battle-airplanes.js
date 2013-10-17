@@ -1,11 +1,14 @@
-var fs = require('fs'), 
-	express = require('express'), 
+var express = require('express'),
+	app = express(),
+	http = require('http'),
+	server = http.createServer(app),
+	io = require('socket.io').listen(server),
 	utils = require('./utils.js'),
-	config = require('./config.js');
+	config = require('./config.js'),
+	path = require('path');
 
-// Create server on port specified in config.js file
-var server = express();
-server.listen(config.web.port);
+// Server listens on port specified in config.js file
+app.listen(config.web.port);
 console.log('\t* Server started on http://localhost:' + config.web.port);
 
 // Global variables
@@ -16,35 +19,11 @@ global.opposingBoard;
 // Initialize the boards
 initializeBoards();
 
-// Read boards.html file to create the basic html 
-fs.readFile('../resources/boards.html', function (err, html) {
-	if (err) {
-		console.log('\t* ERROR reading boards.html!\n\t\t' + err)
-	}
-	else {
-		boardsFile = html;
-		console.log('\t* Read boards.html successfully');
-	}
+// Default landing URL
+app.get('/game', function (req, res){
+	var pathToFile = path.resolve('../resources/', 'boards.html');
+	res.sendfile(pathToFile);
 });
-
-
-server.get('/game.html', function (req, res){
-	res.writeHead(200, {'content-type' : 'text/html'});
-	res.write(boardsFile);
-	res.end();
-});
-
-// server.get('/initializeYourTable.html', function (req, res) {
-// 	var yourTable = utils.initializeYourTable(yourBoard);
-// 	res.writeHead(200, {'content-type' : 'text/html'});
-// 	res.end(yourTable);
-// });
-
-// server.get('/initializeOpposingTable.html', function (req, res) {
-//     var opposingTable = utils.initializeOpposingTable(opposingBoard);
-// 	res.writeHead(200, {'content-type' : 'text/html'});
-// 	res.end(opposingTable);
-// });
 
 
 function initializeBoards() {
