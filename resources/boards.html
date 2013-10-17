@@ -3,8 +3,17 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Aiplane Battles v0.0.1</title>
 
-		<script type="text/javascript">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
+		<script type="text/javascript">
+			jQuery(document).ready(function(){
+				var socket = io.connect();
+				socket.on('connect', function(){
+					// call the server-side function 'adduser' and send one parameter (value of prompt)
+					socket.emit('adduser', prompt("What's your name?"));
+				});
+			});
 		</script>
 
 		<style type="text/css">
