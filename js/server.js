@@ -8,7 +8,7 @@ var express = require('express'),
 	path = require('path');
 
 // Server listens on port specified in config.js file
-app.listen(config.web.port);
+server.listen(config.web.port);
 console.log('\t* Server started on http://localhost:' + config.web.port);
 
 // Global variables
@@ -21,8 +21,14 @@ initializeBoards();
 
 // Default landing URL
 app.get('/game', function (req, res){
-	var pathToFile = path.resolve('../resources/', 'boards.html');
-	res.sendfile(pathToFile);
+	res.sendfile(path.resolve('../resources/', 'boards.html'));
+});
+
+io.sockets.on('connection', function (socket) {
+	// when the client emits 'adduser', this listens and executes
+	socket.on('adduser', function(username){
+		console.log('\t* Client "' + username + '" connected');
+	});
 });
 
 
