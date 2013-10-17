@@ -1,6 +1,6 @@
 {
   "name": "PaperAirplanes",
-  "version" : "0.1",
+  "version" : "0.0.1",
   "description": "Paper Airplanes game in JS",
   "author": "Raul Rene Lepsa <raul.lepsa@gmail.com>",
   "dependencies": {

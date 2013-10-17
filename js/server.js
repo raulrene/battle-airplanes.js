@@ -1,11 +1,12 @@
 var fs = require('fs'), 
 	express = require('express'), 
-	utils = require('./utils.js');
+	utils = require('./utils.js'),
+	config = require('./config.js');
 
-// Create server on port 1907
+// Create server on port specified in config.js file
 var server = express();
-server.listen(1907);
-console.log('\t* Server started on http://localhost:1907.');
+server.listen(config.web.port);
+console.log('\t* Server started on http://localhost:' + config.web.port);
 
 // Global variables
 global.boardsFile;
@@ -22,7 +23,7 @@ fs.readFile('../resources/boards.html', function (err, html) {
 	}
 	else {
 		boardsFile = html;
-		console.log('\t* Read boards.html successfully.');
+		console.log('\t* Read boards.html successfully');
 	}
 });
 
