@@ -2,7 +2,7 @@
 module.exports = function(grunt) {
 
   var sourceDir = "less/";
-  var cssDir = "css/";
+  var cssDir = "app/public/css/";
 
   function getLessFileTargets() {
     var targets = {};
