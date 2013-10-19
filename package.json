@@ -1,7 +1,7 @@
 {
-  "name": "PaperAirplanes",
-  "version" : "0.0.1",
-  "description": "Paper Airplanes game in JS",
+  "name": "BattleAirplanes",
+  "version" : "0.0.2",
+  "description": "Battle Airplanes JS Game",
   "author": "Raul Rene Lepsa <raul.lepsa@gmail.com>",
   "dependencies": {
     "grunt-contrib-less" : ">0.2",
