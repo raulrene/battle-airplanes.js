@@ -7,24 +7,34 @@
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
 		<script type="text/javascript">
-			var socket = undefined;
+			var socket = null;
+			var userid = null;
 
-			$(document).ready(function(){
+			$(document).ready(function (){
 				socket = io.connect();
-				socket.on('connect', function(){
+				socket.on('connect', function (){
 					// Call the server-side function 'newuser' and send one parameter (value of prompt)
 					socket.emit('newuser', prompt("Please write your name or hit Cancel to play as guest"));
 				});
 
-				socket.on('boards', function(yourTableHTML, opposingBoardHTML) {
+				socket.on('accept', function (id, yourTableHTML, opposingBoardHTML) {
+					// Store userid
+					userid = id;
+
+					// Generate HTML tables
 					$('#yourTable').html(yourTableHTML);
 					$('#opposingTable').html(opposingBoardHTML);
+				});
+
+				socket.on('shoot', function (position, action) {
+					$('#' + position).removeClass('unselected');	
+					$('#' + position).addClass('selected');	
 				});
 			});
 
 			function shoot (position) {
-				if (typeof socket != undefined) {
-					socket.emit('shoot', position);
+				if (socket != null && userid != null) {
+					socket.emit('shoot', userid, position);
 				}
 			}
 		</script>
