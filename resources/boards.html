@@ -27,8 +27,18 @@
 				});
 
 				socket.on('shoot', function (position, action) {
-					$('#' + position).removeClass('unselected');	
-					$('#' + position).addClass('selected');	
+					var targetElement = $('#' + position);
+
+					if (action == 'MISS') {
+						targetElement.removeClass('unselected');
+						targetElement.addClass('selected');
+					} else if (action == 'HIT') {
+						targetElement.removeClass('unselected');
+						targetElement.addClass('hit');
+					} else if (action == 'DEAD') {
+						targetElement.removeClass('unselected');
+						targetElement.addClass('dead');
+					}
 				});
 			});
 
