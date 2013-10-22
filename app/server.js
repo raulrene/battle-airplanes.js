@@ -25,7 +25,7 @@ app.get('/game', function (req, res){
 
 io.sockets.on('connection', function (socket) {
 	// when the client emits 'adduser', this listens and executes
-	socket.on('newuser', function(username){
+	socket.on('newuser', function (username){
 		console.log('\t* Client with username "' + username + '" connected');
 
 		// Generate User ID
@@ -48,24 +48,15 @@ io.sockets.on('connection', function (socket) {
 		console.log('\t* Sent ID & Boards to client "' + username + '"');
 	});
 
-	socket.on('shoot', function(userid, position) {
+	socket.on('shoot', function (userid, position) {
 		var i = position.split("_")[0];
 		var j = position.split("_")[1];
-		var action;
-
-		if (opposingBoardsMap.userid[i][j] == 0) {
-			// If miss
-			action = 'MISS';
-		} else if (opposingBoardsMap.userid[i][j] == 1) {
-			// If hit
-			action = 'HIT';
-		} else if (opposingBoardsMap.userid[i][j] == 2) {
-			// If hit in the head (aka dead)
-			action = 'DEAD';
-		}
+		var tiles;
+		var board = opposingBoardsMap.userid[i][j];
+		var action = board.action;
 
 		console.log('\t* Client "' + userid + '" shot at [' + i + ', ' + j + '], which resulted in a ' + action);
 
-		socket.emit('shoot', position, action);
+		socket.emit('shoot', position, action, tiles);
 	});
 });

@@ -26,16 +26,16 @@
 					$('#opposingTable').html(opposingBoardHTML);
 				});
 
-				socket.on('shoot', function (position, action) {
+				socket.on('shoot', function (position, action, tiles) {
 					var targetElement = $('#' + position);
 
-					if (action == 'MISS') {
+					if (action == 'miss') {
 						targetElement.removeClass('unselected');
 						targetElement.addClass('selected');
-					} else if (action == 'HIT') {
+					} else if (action == 'hit') {
 						targetElement.removeClass('unselected');
 						targetElement.addClass('hit');
-					} else if (action == 'DEAD') {
+					} else if (action == 'dead') {
 						targetElement.removeClass('unselected');
 						targetElement.addClass('dead');
 					}

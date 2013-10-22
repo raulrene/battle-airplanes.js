@@ -9,6 +9,7 @@ module.exports = {
 		});
 	},
 
+
 	/** Create a new 10x10 tiles board **/
 	createBoard: function () {
 		var board = new Array(10);
@@ -21,18 +22,22 @@ module.exports = {
 		}
 
 		for (var i = 0; i < 10; i++) {
-			board[i] = [].repeat(0, 10);
+			board[i] = [].repeat({'plane': null, 'action': 'miss'}, 10);
 		}
+
+		console.log(board);
 		return board;
 	},
 
+
+	/** Initialize your HTML board from the yourBoard object **/
 	initializeYourTable: function (yourBoard) {
 		// Top-left empty square
 		var yourTable = '<div class="square identifier"></div>';
 
 		for (var i = 0; i < 10; i++) {
 			// Construct X-axis identifiers - letters (top)
-			if (i === 0) {
+			if (i == 0) {
 				for (var k = 0; k < 10; k++) {
 					yourTable += '<div class="square identifier">' + String.fromCharCode(65 + k) + '</div>';
 				}
@@ -43,13 +48,13 @@ module.exports = {
 
 			// Construct the actual content of the board
 			for (var j = 0; j < 10; j++) {
-				if (yourBoard[i][j] === 0) {
+				if (yourBoard[i][j].action == 'miss') {
 					yourTable += '<div class="square unselected"></div>';
 				}
-				else if (yourBoard[i][j] === 1) {
+				else if (yourBoard[i][j].action == 'hit') {
 					yourTable += '<div class="square selected"></div>';
 				}
-				else if (yourBoard[i][j] === 2) {
+				else if (yourBoard[i][j].action == 'dead') {
 					yourTable += '<div class="square head"></div>';
 				}
 			}
@@ -57,6 +62,8 @@ module.exports = {
 		return yourTable;
 	},
 
+
+	/** Initialize the opponent's HTML board from the opposingBoard object **/
 	initializeOpposingTable: function (oppposingBoard) {
 		// Top-left empty square
 		var opposingTable = '<div class="square identifier"></div>';
@@ -64,7 +71,7 @@ module.exports = {
 		for (var i = 0; i < 10; i++) {
 
 			// Construct X-axis identifiers - letters (top)
-			if (i === 0) {
+			if (i == 0) {
 				for (var k = 0; k < 10; k++) {
 					opposingTable += '<div class="square identifier">' + String.fromCharCode(65 + k) + '</div>';
 				}
@@ -82,30 +89,36 @@ module.exports = {
 		return opposingTable;
 	},
 
+
+	/** Insert dummy planes in a board object **/
 	insertDummyPlanesInBoard: function (board) {
+		var planeId = 1;
+
 		// Insert airplane 1
-		board[0][2] = 2;
-		board[1][0] = 1;
-		board[1][1] = 1;
-		board[1][2] = 1;
-		board[1][3] = 1;
-		board[1][4] = 1;
-		board[2][2] = 1;
-		board[3][1] = 1;
-		board[3][2] = 1;
-		board[3][3] = 1;
+		board[0][2] = {'plane': planeId, 'action': 'dead'};
+		board[1][0] = {'plane': planeId, 'action': 'hit'};
+		board[1][1] = {'plane': planeId, 'action': 'hit'};
+		board[1][2] = {'plane': planeId, 'action': 'hit'};
+		board[1][3] = {'plane': planeId, 'action': 'hit'};
+		board[1][4] = {'plane': planeId, 'action': 'hit'};
+		board[2][2] = {'plane': planeId, 'action': 'hit'};
+		board[3][1] = {'plane': planeId, 'action': 'hit'};
+		board[3][2] = {'plane': planeId, 'action': 'hit'};
+		board[3][3] = {'plane': planeId, 'action': 'hit'};
+
+		planeId = 2;
 
 		// Insert airplane 2
-		board[6][8] = 2;
-		board[6][7] = 1;
-		board[6][6] = 1;
-		board[6][5] = 1;
-		board[5][7] = 1;
-		board[4][7] = 1;
-		board[7][7] = 1;
-		board[8][7] = 1;
-		board[5][5] = 1;
-		board[7][5] = 1;
+		board[6][8] = {'plane': planeId, 'action': 'dead'};
+		board[6][7] = {'plane': planeId, 'action': 'hit'};
+		board[6][6] = {'plane': planeId, 'action': 'hit'};
+		board[6][5] = {'plane': planeId, 'action': 'hit'};
+		board[5][7] = {'plane': planeId, 'action': 'hit'};
+		board[4][7] = {'plane': planeId, 'action': 'hit'};
+		board[7][7] = {'plane': planeId, 'action': 'hit'};
+		board[8][7] = {'plane': planeId, 'action': 'hit'};
+		board[5][5] = {'plane': planeId, 'action': 'hit'};
+		board[7][5] = {'plane': planeId, 'action': 'hit'};
 
 		return board;
 	}
