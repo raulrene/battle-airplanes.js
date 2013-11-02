@@ -34,7 +34,7 @@
 						targetElement.addClass('selected');
 					} else if (action == 'hit') {
 						targetElement.removeClass('unselected');
-						targetElement.addClass('hit');
+						targetElement.addClass('animated pulse hit');
 					} else if (action == 'dead') {
 						targetElement.removeClass('unselected');
 						targetElement.addClass('dead');
@@ -58,6 +58,8 @@
 		</script>
 
 		<link rel="stylesheet" type="text/css" href="/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/css/animate.min.css" />
+	</head>
 
 <body>
 	<div id="yourTable" class="board left"></div>	
