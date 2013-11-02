@@ -26,7 +26,7 @@
 					$('#opposingTable').html(opposingBoardHTML);
 				});
 
-				socket.on('shoot', function (position, action, tiles) {
+				socket.on('shoot', function (position, action, planeTiles) {
 					var targetElement = $('#' + position);
 
 					if (action == 'miss') {
@@ -38,6 +38,14 @@
 					} else if (action == 'dead') {
 						targetElement.removeClass('unselected');
 						targetElement.addClass('dead');
+
+						for (var i = 0; i < planeTiles.length; i++) {
+							targetElement = $('#' + planeTiles[i]);
+							targetElement.removeClass('unselected');
+							targetElement.removeClass('hit');
+							targetElement.addClass('dead');
+							targetElement.attr('onclick', '').unbind('click');
+						}
 					}
 				});
 			});

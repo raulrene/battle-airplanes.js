@@ -51,12 +51,17 @@ io.sockets.on('connection', function (socket) {
 	socket.on('shoot', function (userid, position) {
 		var i = position.split("_")[0];
 		var j = position.split("_")[1];
-		var tiles;
-		var board = opposingBoardsMap.userid[i][j];
-		var action = board.action;
+		var planeTiles;
+		var board = opposingBoardsMap.userid;
+		var action = board[i][j].action;
+
+		// If dead, retrieve all the tiles containing the plane
+		if (action == 'dead') {
+			planeTiles = utils.getPlane(board[i][j].plane, board);
+		}
 
 		console.log('\t* Client "' + userid + '" shot at [' + i + ', ' + j + '], which resulted in a ' + action);
 
-		socket.emit('shoot', position, action, tiles);
+		socket.emit('shoot', position, action, planeTiles);
 	});
 });

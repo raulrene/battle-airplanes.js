@@ -121,5 +121,20 @@ module.exports = {
 		board[7][5] = {'plane': planeId, 'action': 'hit'};
 
 		return board;
+	},
+
+	/** Get all the tiles that belong to a certain plane **/
+	getPlane: function (planeId, board) {
+		var i, j, tiles = [];
+
+		for (i = 0; i <10; i++) {
+			for (j = 0; j < 10; j++) {
+				if (board[i][j].plane == planeId) {
+					tiles.push(i + '_' + j);
+				}
+			}
+		}
+
+		return tiles;
 	}
 };
