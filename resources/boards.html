@@ -26,7 +26,7 @@
 					$('#opposingTable').html(opposingBoardHTML);
 				});
 
-				socket.on('shoot', function (position, action, planeTiles) {
+				socket.on('shoot', function (position, action, planeTiles, won) {
 					if (action == 'miss') {
 						$('#' + position).removeClass('unselected').addClass('selected');
 					} else if (action == 'hit') {
@@ -34,6 +34,11 @@
 					} else if (action == 'dead') {
 						for (var i = 0; i < planeTiles.length; i++) {
 							$('#' + planeTiles[i]).removeClass('unselected hit').addClass('dead animated shake').attr('onclick', '').unbind('click');	
+						}
+
+						if (won && $('.dead').size() >= 20) {
+							alert('Congratulations, you won!');
+							newGame();
 						}
 					}
 				});
@@ -44,6 +49,11 @@
 					socket.emit('shoot', userid, position);
 				}
 			}
+
+			function newGame() {
+				window.location = '/game';
+			}
+
 		</script>
 
 		<link rel="stylesheet" type="text/css" href="/css/style.css" />

@@ -51,17 +51,19 @@ io.sockets.on('connection', function (socket) {
 	socket.on('shoot', function (userid, position) {
 		var i = position.split("_")[0];
 		var j = position.split("_")[1];
-		var planeTiles;
+		var planeTiles, response, won;
 		var board = opposingBoardsMap.userid;
 		var action = board[i][j].action;
 
-		// If dead, retrieve all the tiles containing the plane
+		// If dead, mark the plane as killed, retrieve all the tiles containing the plane and check if the game is over
 		if (action == 'dead') {
-			planeTiles = utils.getPlane(board[i][j].plane, board);
+			response = utils.killPlane(board[i][j].plane, board);
+			won = response.won;
+			planeTiles = response.tiles;
 		}
 
 		console.log('\t* Client "' + userid + '" shot at [' + i + ', ' + j + '], which resulted in a ' + action);
 
-		socket.emit('shoot', position, action, planeTiles);
+		socket.emit('shoot', position, action, planeTiles, won);
 	});
 });

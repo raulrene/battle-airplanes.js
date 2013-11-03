@@ -123,18 +123,28 @@ module.exports = {
 		return board;
 	},
 
-	/** Get all the tiles that belong to a certain plane **/
-	getPlane: function (planeId, board) {
-		var i, j, tiles = [];
+	/** 
+	* Kill the plane identified by'planeId'and get all the tiles belonging to it
+	* Check if there are any more planes to be killed (if the game is won or not)
+	**/
+	killPlane: function (planeId, board) {
+		var response, i, j;
+		var response = {'tiles': [], 'won': true};
 
 		for (i = 0; i <10; i++) {
 			for (j = 0; j < 10; j++) {
+				// Mark all the plane's tiles as dead, and store them to be retrieved	
 				if (board[i][j].plane == planeId) {
-					tiles.push(i + '_' + j);
+					board[i][j].action = 'dead';
+					response.tiles.push(i + '_' + j);
+				}
+				// If any more 'hit' actions are found, it means that there are planes that are 'still' alive
+				else if (response.won && board[i][j].action == 'hit') {
+					response.won = false;
 				}
 			}
 		}
 
-		return tiles;
+		return response;
 	}
 };
