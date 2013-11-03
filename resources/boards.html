@@ -33,7 +33,12 @@
 						$('#' + position).removeClass('unselected').addClass('animated pulse hit');
 					} else if (action == 'dead') {
 						for (var i = 0; i < planeTiles.length; i++) {
-							$('#' + planeTiles[i]).removeClass('unselected hit').addClass('dead animated shake').attr('onclick', '').unbind('click');	
+							$('#' + planeTiles[i]).removeClass('unselected hit animated pulse').addClass('dead animated shake').attr('onclick', '').unbind('click');	
+						}
+
+						if (won && $('.dead').size() >= 20) {
+							alert('Congratulations, you won!');
+							newGame();
 						}
 
 						if (won && $('.dead').size() >= 20) {
