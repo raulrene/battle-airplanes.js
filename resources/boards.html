@@ -27,24 +27,13 @@
 				});
 
 				socket.on('shoot', function (position, action, planeTiles) {
-					var targetElement = $('#' + position);
-
 					if (action == 'miss') {
-						targetElement.removeClass('unselected');
-						targetElement.addClass('selected');
+						$('#' + position).removeClass('unselected').addClass('selected');
 					} else if (action == 'hit') {
-						targetElement.removeClass('unselected');
-						targetElement.addClass('animated pulse hit');
+						$('#' + position).removeClass('unselected').addClass('animated pulse hit');
 					} else if (action == 'dead') {
-						targetElement.removeClass('unselected');
-						targetElement.addClass('dead');
-
 						for (var i = 0; i < planeTiles.length; i++) {
-							targetElement = $('#' + planeTiles[i]);
-							targetElement.removeClass('unselected');
-							targetElement.removeClass('hit');
-							targetElement.addClass('dead');
-							targetElement.attr('onclick', '').unbind('click');
+							$('#' + planeTiles[i]).removeClass('unselected hit').addClass('dead animated shake').attr('onclick', '').unbind('click');	
 						}
 					}
 				});
