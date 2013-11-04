@@ -19,6 +19,11 @@ global.boardsMap = {}
 global.opposingBoardsMap = {}
 
 // Default landing URL
+app.get('/', function(req, res){
+	res.sendfile(path.resolve('../resources', 'index.html'));
+});
+
+// Game URL
 app.get('/game', function (req, res){
 	res.sendfile(path.resolve('../resources/', 'boards.html'));
 });
@@ -28,9 +33,11 @@ io.sockets.on('connection', function (socket) {
 	socket.on('newuser', function (username){
 		console.log('\t* Client with username "' + username + '" connected');
 
-		// Generate User ID
-		var userid = utils.generateUserID();
+		// Generate user ID and send it to the client
+		socket.emit('accept', utils.generateUserID());
+	});
 
+	socket.on('get-boards', function (userid) {
 		// Create the boards and insert dummy values in the opposing one
 		var yourBoard = utils.createBoard();
 		var opposingBoard = utils.insertDummyPlanesInBoard(utils.createBoard());
@@ -44,8 +51,9 @@ io.sockets.on('connection', function (socket) {
 		var opposingBoardHTML = utils.initializeOpposingTable(opposingBoard);
 
 		// Send them to the client
-		socket.emit('accept', userid, yourBoardHTML, opposingBoardHTML);
-		console.log('\t* Sent ID & Boards to client "' + username + '"');
+		socket.emit('boards', yourBoardHTML, opposingBoardHTML);
+
+		console.log('\t* Sent boards to client "' + userid + '"');
 	});
 
 	socket.on('shoot', function (userid, position) {
@@ -64,6 +72,6 @@ io.sockets.on('connection', function (socket) {
 
 		console.log('\t* Client "' + userid + '" shot at [' + i + ', ' + j + '], which resulted in a ' + action);
 
-		socket.emit('shoot', position, action, planeTiles, won);
+		socket.emit('shoot-result', position, action, planeTiles, won);
 	});
 });

@@ -3,30 +3,31 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 		<title>Aiplane Battles v0.0.2</title>
 
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+		<script type="text/javascript" src="/js/jquery-2.0.3.min.js"></script>
+		<script type="text/javascript" src="/js/battle-airplanes.js"></script>
 
 		<script type="text/javascript">
-			var socket = null;
-			var userid = null;
-
 			$(document).ready(function (){
 				socket = io.connect();
-				socket.on('connect', function (){
-					// Call the server-side function 'newuser' and send one parameter (value of prompt)
-					socket.emit('newuser', prompt("Please write your name or hit Cancel to play as guest"));
-				});
 
-				socket.on('accept', function (id, yourTableHTML, opposingBoardHTML) {
-					// Store userid
-					userid = id;
+				// Get user ID
+				userid = getUserId();
+				if (userid == null) {
+					goToIndexPage();
+				}
 
-					// Generate HTML tables
+				// Request boards
+				socket.emit('get-boards', userid);
+				
+				// On receiving the boards
+				socket.on('boards', function (yourTableHTML, opposingBoardHTML) {
 					$('#yourTable').html(yourTableHTML);
-					$('#opposingTable').html(opposingBoardHTML);
+					$('#opposingTable').html(opposingBoardHTML);		
 				});
 
-				socket.on('shoot', function (position, action, planeTiles, won) {
+				// On shoot result
+				socket.on('shoot-result', function (position, action, planeTiles, won) {
 					if (action == 'miss') {
 						$('#' + position).removeClass('unselected').addClass('selected');
 					} else if (action == 'hit') {
@@ -38,26 +39,16 @@
 
 						if (won && $('.dead').size() >= 20) {
 							alert('Congratulations, you won!');
-							newGame();
+							goToIndexPage();
 						}
 
 						if (won && $('.dead').size() >= 20) {
 							alert('Congratulations, you won!');
-							newGame();
+							goToIndexPage();
 						}
 					}
 				});
-			});
-
-			function shoot (position) {
-				if (socket != null && userid != null) {
-					socket.emit('shoot', userid, position);
-				}
-			}
-
-			function newGame() {
-				window.location = '/game';
-			}
+			});	
 
 		</script>
 
@@ -65,8 +56,8 @@
 		<link rel="stylesheet" type="text/css" href="/css/animate.min.css" />
 	</head>
 
-<body>
-	<div id="yourTable" class="board left"></div>	
-	<div id="opposingTable" class="board right"></div>
-</body>
+	<body>
+		<div id="yourTable" class="board left"></div>	
+		<div id="opposingTable" class="board right"></div>
+	</body>
 </html>
