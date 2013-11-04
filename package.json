@@ -1,6 +1,6 @@
 {
   "name": "BattleAirplanes",
-  "version" : "0.0.2",
+  "version" : "0.0.3",
   "description": "Battle Airplanes JS Game",
   "author": "Raul Rene Lepsa <raul.lepsa@gmail.com>",
   "dependencies": {
