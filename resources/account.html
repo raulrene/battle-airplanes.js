@@ -1,0 +1,36 @@
+<html><html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/js/jquery-2.0.3.min.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function (){
+			socket = io.connect();
+		});
+
+		function register (){
+			socket.emit('register', $('#username').val(), $('#name').val(), $('#password').val());
+			socket.on('register', function (response) {
+				if (response.status == 200) {
+					alert('Success');
+				}
+				
+				else if (response.status == 400) {
+					alert(response.errors);	
+				}
+			});
+		}
+	</script>
+</head>
+
+<body>
+	<input id="username" type="text" placeholder="Username">
+	<input id="name" type="text" placeholder="Preferred Name">
+	<input id="password" type="password">
+
+	<br>
+	<input type="button" value="Submit" onclick="register();">
+</body>
+</html>

@@ -1,42 +1,42 @@
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Aiplane Battles v0.0.3</title>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Aiplane Battles v0.0.3</title>
 
-		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-		<script type="text/javascript" src="/js/jquery-2.0.3.min.js"></script>
-		<script type="text/javascript" src="/js/battle-airplanes.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/js/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="/js/battle-airplanes.js"></script>
 
-		<script type="text/javascript">
-			$(document).ready(function (){
-				socket = io.connect();
+	<script type="text/javascript">
+		$(document).ready(function (){
+			socket = io.connect();
 
-				username = getUsername();
-				userid = getUserId();
+			username = getUsername();
+			userid = getUserId();
 
-				if (username == null || userid == null) {
-					// Get the user's name
-					var userInput = prompt('Please write your name or hit Cancel to play as guest');
-					username = userInput ? userInput : 'Guest';
+			if (username == null || userid == null) {
+				// Get the user's name
+				var userInput = prompt('Please write your name or hit Cancel to play as guest');
+				username = userInput ? userInput : 'Guest';
 
-					// Call the server-side function 'newuser' and send one parameter (value of prompt)
-					socket.emit('newuser', username);
-				}
+				// Call the server-side function 'newuser' and send one parameter (value of prompt)
+				socket.emit('newuser', username);
+			}
 
-				// Set the welcome message	
-				$('#username').html('Welcome, ' + username + '!');
+			// Set the welcome message	
+			$('#username').html('Welcome, ' + username + '!');
 
-				// If connection is accepted by the server, store the generated UUID
-				socket.on('accept', function (id) {
-					setUser(id, username);
-				});
-			});	
-		</script>
-	</head>
+			// If connection is accepted by the server, store the generated UUID
+			socket.on('accept', function (id) {
+				setUser(id, username);
+			});
+		});	
+	</script>
+</head>
 
-	<body>
-		<strong><span id="username"></span></strong>
-		<br>
-		<input type="button" onclick="goToNewGamePage()" value="New Game">
-	</body>
+<body>
+	<strong><span id="username"></span></strong>
+	<br>
+	<input type="button" onclick="goToNewGamePage()" value="New Game">
+</body>
 </html>

@@ -6,6 +6,8 @@
   "dependencies": {
     "grunt-contrib-less" : ">0.2",
     "grunt" : "0.4",
-    "express": "3.x"
+    "express": "3.x",
+    "couchbase": "1.x",
+    "uuid": "~1.4.1"
   }
 }

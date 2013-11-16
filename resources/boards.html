@@ -1,63 +1,63 @@
 <html>
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-		<title>Aiplane Battles v0.0.3</title>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+	<title>Aiplane Battles v0.0.3</title>
 
-		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-		<script type="text/javascript" src="/js/jquery-2.0.3.min.js"></script>
-		<script type="text/javascript" src="/js/battle-airplanes.js"></script>
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/js/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="/js/battle-airplanes.js"></script>
 
-		<script type="text/javascript">
-			$(document).ready(function (){
-				socket = io.connect();
+	<script type="text/javascript">
+		$(document).ready(function (){
+			socket = io.connect();
 
-				// Get user ID
-				userid = getUserId();
-				if (userid == null) {
-					goToIndexPage();
-				}
+			// Get user ID
+			userid = getUserId();
+			if (userid == null) {
+				goToIndexPage();
+			}
 
-				// Request boards
-				socket.emit('get-boards', userid);
-				
-				// On receiving the boards
-				socket.on('boards', function (yourTableHTML, opposingBoardHTML) {
-					$('#yourTable').html(yourTableHTML);
-					$('#opposingTable').html(opposingBoardHTML);		
-				});
+			// Request boards
+			socket.emit('get-boards', userid);
+			
+			// On receiving the boards
+			socket.on('boards', function (yourTableHTML, opposingBoardHTML) {
+				$('#yourTable').html(yourTableHTML);
+				$('#opposingTable').html(opposingBoardHTML);		
+			});
 
-				// On shoot result
-				socket.on('shoot-result', function (position, action, planeTiles, won) {
-					if (action == 'miss') {
-						$('#' + position).removeClass('unselected').addClass('selected');
-					} else if (action == 'hit') {
-						$('#' + position).removeClass('unselected').addClass('animated pulse hit');
-					} else if (action == 'dead') {
-						for (var i = 0; i < planeTiles.length; i++) {
-							$('#' + planeTiles[i]).removeClass('unselected hit animated pulse').addClass('dead animated shake').attr('onclick', '').unbind('click');	
-						}
-
-						if (won && $('.dead').size() >= 20) {
-							alert('Congratulations, you won!');
-							goToIndexPage();
-						}
-
-						if (won && $('.dead').size() >= 20) {
-							alert('Congratulations, you won!');
-							goToIndexPage();
-						}
+			// On shoot result
+			socket.on('shoot-result', function (position, action, planeTiles, won) {
+				if (action == 'miss') {
+					$('#' + position).removeClass('unselected').addClass('selected');
+				} else if (action == 'hit') {
+					$('#' + position).removeClass('unselected').addClass('animated pulse hit');
+				} else if (action == 'dead') {
+					for (var i = 0; i < planeTiles.length; i++) {
+						$('#' + planeTiles[i]).removeClass('unselected hit animated pulse').addClass('dead animated shake').attr('onclick', '').unbind('click');	
 					}
-				});
-			});	
 
-		</script>
+					if (won && $('.dead').size() >= 20) {
+						alert('Congratulations, you won!');
+						goToIndexPage();
+					}
 
-		<link rel="stylesheet" type="text/css" href="/css/style.css" />
-		<link rel="stylesheet" type="text/css" href="/css/animate.min.css" />
-	</head>
+					if (won && $('.dead').size() >= 20) {
+						alert('Congratulations, you won!');
+						goToIndexPage();
+					}
+				}
+			});
+		});	
 
-	<body>
-		<div id="yourTable" class="board left"></div>	
-		<div id="opposingTable" class="board right"></div>
-	</body>
+	</script>
+
+	<link rel="stylesheet" type="text/css" href="/css/style.css" />
+	<link rel="stylesheet" type="text/css" href="/css/animate.min.css" />
+</head>
+
+<body>
+	<div id="yourTable" class="board left"></div>	
+	<div id="opposingTable" class="board right"></div>
+</body>
 </html>
