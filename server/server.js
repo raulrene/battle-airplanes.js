@@ -21,16 +21,16 @@ global.opposingBoardsMap = {}
 
 // Default landing URL
 app.get('/', function (req, res){
-	res.sendfile(path.resolve('../resources', 'index.html'));
+	res.sendfile(path.resolve('../server/views', 'index.html'));
 });
 
 // Game URL
 app.get('/game', function (req, res){
-	res.sendfile(path.resolve('../resources/', 'boards.html'));
+	res.sendfile(path.resolve('../server/views', 'boards.html'));
 });
 
-app.get('/users', function (req, res){
-	res.sendfile(path.resolve('../resources/', 'account.html'));
+app.get('/login', function (req, res){
+	res.sendfile(path.resolve('../server/views', 'login.html'));
 });
 
 io.sockets.on('connection', function (socket) {
