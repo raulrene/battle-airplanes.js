@@ -1,6 +1,7 @@
-var uuid = require('uuid');
-var couchbase = require('couchbase');
-var db = require('./../database').mainBucket;
+var uuid = require('uuid'),
+    couchbase = require('couchbase'),
+    path = require('path'),
+    db = require(path.resolve(__dirname, '../commons/database')).mainBucket;
 
 function cleanUserObj(obj) {
 	delete obj.type;
