@@ -15,22 +15,28 @@ console.log('\t* Server started on http://localhost:' + config.web.port);
 // App has static assests in the 'public' folder
 app.use(express.static('../public'));
 
+// Make app and io available in other files
+module.exports = {
+	app: app,
+	io: io
+};
+
 // Global key-value objects to hold players and their associated opponents
 global.boardsMap = {}
 global.opposingBoardsMap = {}
 
 // Default landing URL
-app.get('/', function (req, res){
-	res.sendfile(path.resolve('../server/views', 'index.html'));
-});
+// app.get('/', function (req, res){
+// 	res.sendfile(path.resolve('../server/views', 'index.html'));
+// });
 
 // Game URL
 app.get('/game', function (req, res){
 	res.sendfile(path.resolve('../server/views', 'boards.html'));
 });
 
-app.get('/login', function (req, res){
-	res.sendfile(path.resolve('../server/views', 'login.html'));
+app.get('/register', function (req, res){
+	res.sendfile(path.resolve('../server/views', 'register.html'));
 });
 
 io.sockets.on('connection', function (socket) {
@@ -80,16 +86,16 @@ io.sockets.on('connection', function (socket) {
 		socket.emit('shoot-result', position, action, planeTiles, won);
 	});
 
-	socket.on('register', function (username, name, password) {
+	socket.on('register', function (email, displayName, password) {
 		response = {status: '200', errors: []};
 
-		if (!name || name.trim() == '') {
+		if (!displayName || displayName.trim() == '') {
 	    	response.status = 400;
 	    	response.errors.push('Must specify a name');
 	    }
-		if (!username || username.trim() == '') {
+		if (!email || email.trim() == '') {
 	    	response.status = 400;
-	    	response.errors.push('Must specify a username');
+	    	response.errors.push('Must specify an email');
 		}
 		if (!password || password.trim() == '') {
 	    	response.status = 400;
@@ -97,7 +103,7 @@ io.sockets.on('connection', function (socket) {
 		}
 
 		if (response.status != 400) {
-			var newUser = {username: username, name: name};
+			var newUser = {email: email, displayName: displayName};
 			
 			newUser.password = utils.crypt(password);
 
