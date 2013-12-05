@@ -2,4 +2,5 @@
 utils = require('../commons/utils');
 
 require('./RegistrationController');
+require('./LoginController');
 require('./GameController');

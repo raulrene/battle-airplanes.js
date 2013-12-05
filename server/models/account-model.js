@@ -1,48 +1,31 @@
 var uuid = require('uuid'),
-    couchbase = require('couchbase'),
     path = require('path'),
-    db = require(path.resolve(__dirname, '../commons/database')).mainBucket;
+    db = require(path.resolve(__dirname, '../commons/db-connection')).db;
 
-function cleanUserObj(obj) {
-	delete obj.type;
-	return obj;
-}
 
 function AccountModel() {
 
 }
 
+/** Insert a new user account in the DB **/
 AccountModel.create = function (user, callback) {
-    var userDoc = {
-        type: 'user',
-        uid: uuid.v4(),
-        name: user.name,
-        username: user.username,
-        password: user.password
-    };
-    var userDocName = 'user-' + userDoc.uid;
 
-    var refDoc = {
-        type: 'username',
-        uid: userDoc.uid
-    };
-    var refDocName = 'username-' + userDoc.username;
-
-    db.add(refDocName, refDoc, function (err) {
-        if (err && err.code === couchbase.errors.keyAlreadyExists) {
-            return callback('The username specified already exists');
-        } else if (err) {
-            return callback(err);
-        }
-
-        db.add(userDocName, userDoc, function (err, result) {
+    db.query(
+        'INSERT INTO account(uid, email, displayname, password) VALUES ($1, $2, $3, $4) RETURNING id',
+        [uuid.v4(), user.email, user.displayName, user.password],
+        function (err, result) {
             if (err) {
-                return callback(err);
+                console.log(err);
+                callback(err);
+            } else {
+                callback(null, result.rows[0].id);
             }
+        }
+    );
+};
 
-            callback(null, cleanUserObj(userDoc), result.cas);
-        });
-    });
+AccountModel.getByEmail = function (email, callback) {
+    
 };
 
 module.exports = AccountModel;

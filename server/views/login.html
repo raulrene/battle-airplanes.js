@@ -1,0 +1,72 @@
+<html><html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+	<link rel="stylesheet" type="text/css" href="/css/style.css" />
+
+	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/js/jquery-2.0.3.min.js"></script>
+	<script type="text/javascript" src="/js/validation.js"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function (){
+			socket = io.connect();
+		});
+
+		function login() {
+			// Clear error messages
+			$('.error').html('');
+
+			// Get input values
+			var email = $('#email').val();
+			var password = $('#password').val();
+			var valid = true;
+
+			// Validate
+			if (validator.isEmpty(email)) {
+				$('#email-error').html(validator.REQUIRED_FIELD);
+				valid = false;
+			} else if (!validator.isValidEmail(email)) {
+				$('#email-error').html(validator.INVALID_EMAIL);
+				valid = false;
+			}
+			if (validator.isEmpty(password)) {
+				$('#password-error').html(validator.REQUIRED_FIELD);
+				valid = false;
+			}
+
+			// Login if valid
+			if (valid) {
+				socket.emit('login', email, password);
+				socket.on('login', function (response) {
+					if (response.status == 200) {
+						//window.location = '/game';
+					}
+					
+					else if (response.status == 400) {
+						alert(response.errors);	
+					}
+				});
+			}
+		}
+
+		function loginGuest() {
+			
+		}
+	</script>
+</head>
+
+<body>
+	<input id="email" type="text" placeholder="Email">
+	<span id="email-error" class="error"></span>
+	<input id="password" type="password" placeholder="Password">
+	<span id="password-error" class="error"></span>
+
+	<br>
+	<input type="button" value="Login" onclick="login();">
+	<input type="button" value="Login as Guest" onclick="loginGuest();">
+
+	<br>
+	<a href="/register">Create a user</a>
+</body>
+</html>

@@ -7,7 +7,7 @@
     "grunt-contrib-less" : ">0.2",
     "grunt" : "0.4",
     "express": "3.x",
-    "couchbase": "1.x",
+    "pg": "2.x",
     "uuid": "~1.4.1"
   }
 }
