@@ -1,6 +1,6 @@
 var socket = null;
 var userid = null;
-var username = null;
+var displayname = null;
 
 function goToIndexPage() {
 	window.location = '/';
@@ -15,25 +15,25 @@ function getUserId() {
 	if (userid != null) {
 		return userid;
 	} else {
-		return localStorage.getItem('userid');
+		return localStorage.getItem('user-uid');
 	}
 }
 
-/** Retrieve the username **/
-function getUsername() {
-	if (username != null) {
-		return username;
+/** Retrieve the displayname **/
+function getDisplayName() {
+	if (displayname != null) {
+		return displayname;
 	} else {
-		return localStorage.getItem('username');
+		return localStorage.getItem('user-displayname');
 	}
 }
 
-/** Persist the user ID **/
-function setUser(id, username) {
+/** Persist the user details on the local storage **/
+function setUser(id, displayname) {
 	userid = id;
-	username = username;
-	localStorage.setItem('userid', userid);
-	localStorage.setItem('username', username);
+	displayname = displayname;
+	localStorage.setItem('user-uid', userid);
+	localStorage.setItem('user-displayname', displayname);
 }
 
 /** On shooting at a certain position **/
@@ -45,6 +45,6 @@ function shoot (position) {
 
 /** Clear local storage items **/
 function clearLocalStorage() {
-	localStorage.removeItem('userid');
-	localStorage.removeItem('username');
+	localStorage.removeItem('user-uid');
+	localStorage.removeItem('user-displayname');
 }

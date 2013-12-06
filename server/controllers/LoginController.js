@@ -11,13 +11,17 @@ io.sockets.on('connection', function (socket) {
 
 			accountModel.getByEmail(email, function (err, user) {
 				if (err) {
+					console.log('aaaa');
 					response.status = 400;
 					response.errors.push('Login has failed');
+				} else {
+					response.uid = user.uid;
+					response.displayname = user.displayname != null ? user.displayname : email;
 				}
+
+				socket.emit('login', response);
 			});
 		}
-
-		socket.emit('login', response);
 	});
 });	
 

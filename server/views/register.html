@@ -45,10 +45,8 @@
 				socket.emit('register', email, preferredName, password);
 				socket.on('register', function (response) {
 					if (response.status == 200) {
-						alert('Success');
-					}
-					
-					else if (response.status == 400) {
+						window.location = '/login';
+					} else if (response.status == 400) {
 						alert(response.errors);	
 					}
 				});

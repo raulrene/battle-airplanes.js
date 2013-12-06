@@ -7,6 +7,7 @@
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="/js/jquery-2.0.3.min.js"></script>
 	<script type="text/javascript" src="/js/validation.js"></script>
+	<script type="text/javascript" src="/js/battle-airplanes.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function (){
@@ -40,7 +41,8 @@
 				socket.emit('login', email, password);
 				socket.on('login', function (response) {
 					if (response.status == 200) {
-						//window.location = '/game';
+						setUser(response.uid, response.displayname);
+						window.location = '/game';
 					}
 					
 					else if (response.status == 400) {

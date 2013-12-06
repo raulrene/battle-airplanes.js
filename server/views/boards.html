@@ -19,6 +19,7 @@
 			if (userid == null) {
 				goToIndexPage();
 			}
+			alert(getDisplayName());
 
 			// Request boards
 			socket.emit('get-boards', userid);
